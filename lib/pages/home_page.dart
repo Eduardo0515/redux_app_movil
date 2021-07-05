@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_contacts/model/app_model.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_contacts/pages/integrantes.dart';
 import 'package:redux_contacts/redux/actions.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -11,6 +12,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Nombres'),
         centerTitle: true,
+        actions: [],
       ),
       body: StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel.create(store),
@@ -23,6 +25,15 @@ class MyHomePage extends StatelessWidget {
             RemoveContactsButton(viewModel)
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.person),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Integrantes()),
+          );
+        },
       ),
     );
   }
@@ -99,9 +110,15 @@ class ContactListWidget extends StatelessWidget {
     return ListView(
       children: model.contacts
           .map((Contact contact) => ListTile(
-                title: Text(contact.name),
+                title: Text(
+                  contact.name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 leading: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.redAccent.shade200,
+                  ),
                   onPressed: () => model.onRemoveContact(contact),
                 ),
               ))
